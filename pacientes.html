@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+    <!-- Css -->
+    <link rel="stylesheet" href="./styles/app.css">
+    <link rel="stylesheet" href="./styles/modal.css">
+
+    <!-- Scripts -->
+    <script src="./scripts/pacientes.js"></script>
+    <script src="./scripts/pdf-table.js"></script>
+    <script src="./scripts/modal.js"></script>
+
+    <!-- JsPdf -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>  
+    
+    <title>IPS Barranquilla</title>
+</head>
+<body id="body">
+
+    <!-- Navbar -->
+    <div class='navbarMain container-fluid d-none d-md-block d-lg-block text-white'>
+        <div class='col-md-6 p-3 w-75 mx-auto align-items-center d-flex justify-content-between'>
+            <div class='name'> 
+                <img class='logo' src="assets/png/logo-ips.png" alt='logo ips barranquilla'/>
+                <span>IPS Barranquilla</span>
+            </div>
+            <ul class='items d-flex w-50 justify-content-between'>
+                <li><a href="./citas.html">Citas</a></li>
+                <li><a href="./pacientes.html">Pacientes</a></li>
+                <li><a href="./citas.html">ADMIN</a></li>
+            </ul> 
+        </div>
+    </div>
+
+    <!-- Header Pacientes -->
+    <div class='header text-light container-fluid d-flex'>
+        <div class='container'>
+          <div class='p-2 d-flex justify-content-between align-items-center'>
+            <div>
+              <span>Pacientes -> consulta de pacientes</span>
+              <h1>administrar pacientes</h1>
+            </div>
+            <div>
+              <button id="open" onclick="openModal()" class="btn btn-sm btn-primary">Nuevo Paciente</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Pacientes -->
+    <div class='container citas'>
+        <div class='mb-4 d-flex justify-content-between p-2'>
+            <h3>Listado de pacientes</h3>
+        <div>
+            <button onclick="generate()" class='btn btn-sm btn-primary'>Generar reporte</button>
+        </div>
+        <div class='d-flex align-items-center'>
+            <span class=''>Filtrar por documento</span>
+            <input type='number' class='form-control text-dark' />
+        </div>
+    </div>
+
+    <div class='table-div mt-4'>
+        <table id='my-table' class='table'>
+                <thead>
+                    <tr class=''>
+                        <th>Id</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Tipo Documento</th>
+                        <th>Documento</th>
+                        <th>Lugar Nacimiento</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Añadir Cita</th>
+                        <th>Editar Datos</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+
+                <tbody id="tbodyPacientes">
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+
+
+
+
+    <!-- Modal -->
+    <div id="modal_container" class="modal-container">
+        <div class="modal-div">
+            <div class="form-group">
+                <h3>AGREGAR PACIENTE</h3>
+                    <form id="form">
+                      <br/>
+                        <label>Nombres</label>
+                        <input required class="form-control" type="text" name="nombres" />
+                        <br/>
+                        <label>Apellidos</label>
+                        <input required class="form-control" type="text" name="apellidos" />
+                        <br/>
+                        <label>Tipo Documento</label>
+                        <input required class="form-control" type="text" name="tipo_doc" />
+                        <br/>
+                        <label>Documento</label>
+                        <input required class="form-control" type="number" min={10000} name="documento" />
+                        <br/>
+                        <label>Fecha Nacimiento</label>
+                        <input required class="form-control" type="date" name="fecha_nac" />
+                        <br/>
+                        <label>Lugar Nacimiento</label>
+                        <input required class="form-control" type="text" name="lugar_nac" />
+                      <br/>
+                    <div class='d-flex bg-white justify-content-between'>
+                        <button type="submit" class="btn btn-success m-1">Insertar</button>
+                        <button type="button" onclick="closeModal()" class="btn btn-danger m-1">Cancelar</button>   
+                    </div>
+                </form>
+              </div>
+        </div>
+    </div>
+
+    <script>
+
+        const url = 'http://localhost:9000/ipsbarranquilla/addpaciente'
+        const myForm = document.getElementById("form");
+
+        myForm.addEventListener('submit', async (e)=>{
+            e.preventDefault();
+
+            // un nuevo formdata de myform
+            const data = new FormData(myForm)
+
+            const formDataSerialized = Object.fromEntries(data)
+            const jsonObject = {...formDataSerialized};
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body:jsonObject,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                })
+                const json = await response.json()
+                console.log(json)
+            } catch (error) {
+                console.log(error)
+            }
+
+        })
+    </script>
+
+</body>
+</html>
