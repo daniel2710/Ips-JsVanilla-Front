@@ -1,10 +1,11 @@
-const getAllPacientesUrl= "http://localhost:9000/ipsbarranquilla/pacientes"
-const tabla = document.getElementById("tbodyPacientes")
+const getAllPacientesUrl= "http://localhost:9000/ipsbarranquilla/pacientes";
 
+const tabla = document.getElementById("tbodyPacientes");
 
-// Evento
+// Evento DOM
 document.addEventListener("DOMContentLoaded", getAllPacientes)
 
+// GET ALL Pacientes
 function getAllPacientes(){
 
     fetch(getAllPacientesUrl)
@@ -14,7 +15,7 @@ function getAllPacientes(){
     // llamamos a la funcion y le pasamos como argumento la data
     .then(data => {
         mostrarPacientes(data)
-        console.log(data);
+        //console.log(data);
     })
     .catch(err=>{
         console.log(err);
@@ -33,12 +34,12 @@ function mostrarPacientes(paciente){
             <td>${paciente[i].documento}</td>
             <td>${paciente[i].lugar_nac}</td>
             <td>${paciente[i].fecha_nac}</td>
-            <td>Añadir</td>
-            <td>Editar</td>
-            <td>Eliminar</td>
+            <td><img onclick="openModalCita()" class="icon btnAddCita" width="15px" height="15px" src="./assets/png/añdir.png" alt="añadir cita"/></td>
+            <td><img onclick="openModalEdit()" class="icon btnPut" width="15px" height="15px" src="./assets/png/editar.png" alt="editar paciente" /></td>
+            <td><img onclick="openModalDelete()" class="icon btnDelete" width="15px" height="15px" src="./assets/png/eliminar.png" alt="eliminar paciente" /></td>
         </tr>`
 
-        document.getElementById("tbodyPacientes").innerHTML = body
+        document.getElementById("tbodyPacientes").innerHTML = body;
     }
-    
 }
+

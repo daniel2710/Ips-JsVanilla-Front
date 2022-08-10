@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
@@ -35,7 +36,7 @@
     </div>
 
     <!-- Header Citas -->
-    <div class='header text-light container-fluid d-flex'>
+    <div id="headerCitas" class='header text-light container-fluid d-flex'>
         <div class='container'>
           <div class='p-2'>
             <span>Citas -> consulta de citas</span> 
@@ -45,16 +46,16 @@
     </div>
 
     <!-- Section Citas -->
-    <section class='container citas'>
+    <section id="containerCitas" class='container citas'>
         <div class='mb-4'>
             <h3>Citas proximas</h3>
             <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
         </div>
         <div class='table-div mt-4'>
-        <table id='table' class='table scroll'>
+        <table id='table' class='table table-striped scroll'>
                 <thead>
                     <tr class=''>
-                        <th>Id</th>
+                        <th>IdCita</th>
                         <th>Fecha</th>
                         <th>Hora</th>
                         <th>Lugar</th>
@@ -73,6 +74,97 @@
             </table>
         </div>
     </section>
+
+
+
+
+    <!-- HISTORIAL CITAS -->
+    <div id="headerHistorial" class='d-none header text-light container-fluid d-flex'>
+        <div class='container'>
+          <div class='p-2'>
+            <span>Citas -> consulta de citas -> historial de citas</span>
+            <h1>Historial de citas</h1>
+          </div>
+        </div>
+    </div>
+
+    <div id="containerHistorial" class='d-none container citas'>
+        <div class='mb-4'>
+            <h3>Paciente</h3>
+        </div>
+        <div class='mt-4'>
+            <table id='table' class='table table-striped'>
+                    <thead>
+                        <tr class=''>
+                            <th>Id</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Tipo Documento</th>
+                            <th>Documento</th>
+                            <th>Fecha Nacimiento</th>
+                            <th>Lugar Nacimiento</th>
+                        </tr>
+                    </thead>
+
+                <tbody id="tbodyPaciente">
+                </tbody>
+            </table>
+        </div>
+
+        <div class='mt-4 mb-4'>
+            <h4>Cita más reciente</h4>
+        </div>
+
+        <div class='mt-4'>
+            <table id='table' class='table table-striped'>
+                    <thead>
+                        <tr class=''>
+                            <th>Id</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Lugar</th>
+                            <th>Direccion</th>
+                            <th>Doctor(a)</th>
+                            <th>Estado</th>
+                            <th>Tipo</th>
+                            <th>Prioritaria</th>
+                            <th>Observación</th>
+                        </tr>
+                    </thead>
+
+                <tbody id="tbodyUltimaCita">
+                </tbody>
+            </table> 
+            </div>
+
+        <div class='mt-4 mb-4'>
+            <h4>Historial</h4>
+        </div>
+
+        <div class='mt-4'>
+            <table id='table' class='table table-striped'>
+                    <thead>
+                        <tr class=''>
+                            <th>Id</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Lugar</th>
+                            <th>Direccion</th>
+                            <th>Doctor(a)</th>
+                            <th>Estado</th>
+                            <th>Tipo</th>
+                            <th>Prioritaria</th>
+                            <th>Observación</th>
+                        </tr>
+                    </thead>
+
+                <tbody id="tbodyHistorial">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
     
 </body>
 </html>

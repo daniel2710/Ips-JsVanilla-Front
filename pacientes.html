@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#">
     
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
@@ -13,6 +14,7 @@
     <!-- Css -->
     <link rel="stylesheet" href="./styles/app.css">
     <link rel="stylesheet" href="./styles/modal.css">
+    <link rel="stylesheet" href="./styles/pacientes.css">
 
     <!-- Scripts -->
     <script src="./scripts/pacientes.js"></script>
@@ -66,12 +68,13 @@
         </div>
         <div class='d-flex align-items-center'>
             <span class=''>Filtrar por documento</span>
-            <input type='number' class='form-control text-dark' />
+            <input id="inputBuscar" type='number' class='form-control text-dark' />
+            <button id="btnBuscar" class="btn btn-info btn-sm" type="submit">Buscar</button>
         </div>
     </div>
 
     <div class='table-div mt-4'>
-        <table id='my-table' class='table'>
+        <table id='my-table' class='table table-striped'>
                 <thead>
                     <tr class=''>
                         <th>Id</th>
@@ -82,12 +85,13 @@
                         <th>Lugar Nacimiento</th>
                         <th>Fecha Nacimiento</th>
                         <th>Añadir Cita</th>
-                        <th>Editar Datos</th>
-                        <th>Eliminar</th>
+                        <th>Editar Paciente</th>
+                        <th>Eliminar Paciente</th>
                     </tr>
                 </thead>
 
                 <tbody id="tbodyPacientes">
+
                 </tbody>
 
             </table>
@@ -97,33 +101,33 @@
 
 
 
-    <!-- Modal -->
-    <div id="modal_container" class="modal-container">
-        <div class="modal-div">
+    <!-- MODAL ADD PACIENTE-->
+    <div id="modal_container" class="modal_container">
+        <div class="modal_div">
             <div class="form-group">
                 <h3>AGREGAR PACIENTE</h3>
-                    <form id="form">
-                      <br/>
+                    <form>
+                        <br/>
                         <label>Nombres</label>
-                        <input required class="form-control" type="text" name="nombres" />
+                        <input id="nombres" required class="form-control" type="text" name="nombres" />
                         <br/>
                         <label>Apellidos</label>
-                        <input required class="form-control" type="text" name="apellidos" />
+                        <input id="apellidos" required class="form-control" type="text" name="apellidos" />
                         <br/>
                         <label>Tipo Documento</label>
-                        <input required class="form-control" type="text" name="tipo_doc" />
+                        <input id="tipo_doc" required class="form-control" type="text" name="tipo_doc" />
                         <br/>
                         <label>Documento</label>
-                        <input required class="form-control" type="number" min={10000} name="documento" />
+                        <input id="documento" required class="form-control" type="number" min={10000} name="documento" />
                         <br/>
                         <label>Fecha Nacimiento</label>
-                        <input required class="form-control" type="date" name="fecha_nac" />
+                        <input id="fecha_nac" required class="form-control" type="date" name="fecha_nac" />
                         <br/>
                         <label>Lugar Nacimiento</label>
-                        <input required class="form-control" type="text" name="lugar_nac" />
-                      <br/>
+                        <input id="lugar_nac" required class="form-control" type="text" name="lugar_nac" />
+                        <br/>
                     <div class='d-flex bg-white justify-content-between'>
-                        <button type="submit" class="btn btn-success m-1">Insertar</button>
+                        <button id="btnAddPaciente" type="submit" class="btn btn-success m-1">Añadir Paciente</button>
                         <button type="button" onclick="closeModal()" class="btn btn-danger m-1">Cancelar</button>   
                     </div>
                 </form>
@@ -131,35 +135,253 @@
         </div>
     </div>
 
+    <!-- MODAL ADD CITA -->
+    <div id="modal_container_add" class="modal_container">
+        <div class="modal_div">
+            <div class="form-group">
+                <h3>AGREGAR CITA</h3>
+                    <form>
+                        <label>Fecha</label>
+                        <input id="fecha" required class="form-control" type="date" name="fecha" />
+                        <label>Hora</label>
+                        <input id="hora" required class="form-control" type="text" name="hora" />
+                        <label>Lugar</label>
+                        <input id="lugar" required class="form-control" type="text" name="lugar" />
+                        <label>Direccion</label>
+                        <input id="direccion" required class="form-control" type="text" name="direccion" />
+                        <label>Doctor(a)</label>
+                        <input id="doctor" required class="form-control" type="text" name="doctor" />
+                        <label>Estado</label>
+                        <input id="estado" required value="pendiente" class="form-control" type="text" name="estado" />
+                        <label>Tipo</label>
+                        <input id="tipo" value="presencial" required class="form-control" type="text" name="tipo" />
+                        <label>Prioritaria</label>
+                        <input id="prioritaria" value="no" required class="form-control" type="text" name="prioritaria" />
+                        <label>Observación</label>
+                        <input id="observacion" value="ninguna" required class="form-control" type="text" name="observacion" />
+                    <div class='d-flex bg-white justify-content-between'>
+                        <button id="btnAddCita" type="submit" class="btn btn-success m-1">Añadir Cita</button>
+                        <button type="button" onclick="closeModalCita()" class="btn btn-danger m-1">Cancelar</button>   
+                    </div>
+                </form>
+              </div>
+        </div>
+    </div>    
+
+    <!-- MODAL EDIT PACIENTE -->
+    <div id="modal_container_edit" class="modal_container">
+        <div class="modal_div">
+            <div class="form-group">
+                <h3>EDITAR PACIENTE</h3>
+                <form>
+                    <br/>
+                    <label>Nombres</label>
+                    <input id="nombresa" required class="form-control" type="text" name="nombres" />
+                    <br/>
+                    <label>Apellidos</label>
+                    <input id="apellidosa" required class="form-control" type="text" name="apellidos" />
+                    <br/>
+                    <label>Tipo Documento</label>
+                    <input id="tipo_doca" required class="form-control" type="text" name="tipo_doc" />
+                    <br/>
+                    <label>Documento</label>
+                    <input id="documentoa" required class="form-control" type="number" min={10000} name="documento" />
+                    <br/>
+                    <div class='d-flex bg-white justify-content-between'>
+                        <button id="btnPut" type="submit" class="btn btn-success m-1">Editar Paciente</button>
+                        <button type="button" onclick="closeModalEdit()" class="btn btn-danger m-1">Cancelar</button>   
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>    
+
+     <!-- MODAL DELETE PACIENTE -->
+     <div id="modal_container_delete" class="modal_container">
+        <div class="modal_div">
+            <div class="form-group">
+                    <h3>ELIMINAR PACIENTE</h3>
+                    <div class='d-flex bg-white justify-content-between'>
+                        <button id="btnDelete" type="submit" class="btn btnDelete btn-success m-1">Confirmar</button>
+                        <button type="button" onclick="closeModalDelete()" class="btn btn-danger m-1">Cancelar</button>   
+                    </div>
+              </div>
+        </div>
+    </div>
+
     <script>
 
-        const url = 'http://localhost:9000/ipsbarranquilla/addpaciente'
-        const myForm = document.getElementById("form");
+        // capturar valores de una fila
+        const capturarFila = (element, event, selector, handler)=>{
+            element.addEventListener(event, e=>{
+                if(e.target.closest(selector)){
+                    handler(e)
+                }
+            })
+        }
 
-        myForm.addEventListener('submit', async (e)=>{
+        // AÑADIR PACIENTE
+        //Peticion Fetch 
+        const addPaciente = 'http://localhost:9000/ipsbarranquilla/addpaciente';
+
+        const btnAddPaciente = document.getElementById("btnAddPaciente");
+        
+        btnAddPaciente.addEventListener('click', function (e){
             e.preventDefault();
-
-            // un nuevo formdata de myform
-            const data = new FormData(myForm)
-
-            const formDataSerialized = Object.fromEntries(data)
-            const jsonObject = {...formDataSerialized};
-            
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body:jsonObject,
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                })
-                const json = await response.json()
-                console.log(json)
-            } catch (error) {
-                console.log(error)
+        
+            let nombres = document.getElementById("nombres").value; 
+            let apellidos = document.getElementById("apellidos").value; 
+            let tipo_doc = document.getElementById("tipo_doc").value; 
+            let documento = document.getElementById("documento").value; 
+            let fecha_nac = document.getElementById("fecha_nac").value; 
+            let lugar_nac = document.getElementById("lugar_nac").value; 
+        
+            let data = {
+                nombres: nombres,
+                apellidos: apellidos,
+                tipo_doc: tipo_doc,
+                documento: documento,
+                fecha_nac: fecha_nac,
+                lugar_nac: lugar_nac
             }
+        
+            const options = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            }
+        
+            fetch(addPaciente, options)
+            .then(response => console.log(response))
 
+            closeModal()
         })
+
+        // EDITAR PACIENTE, PETICION PUT
+        capturarFila(document, 'click', '.btnPut', e =>{
+            // parentNode es el padre del nodo actual, acceder
+            const fila = e.target.parentNode.parentNode
+
+            // children para acceder a los elementos hijos de fila
+            const id = fila.firstElementChild
+            const nombresf = fila.children[1]
+            const apellidosf = fila.children[2]
+            const tipo_docf = fila.children[3]
+            const documentof = fila.children[4]
+            const lugar_nacf = fila.children[5]
+            const fecha_nacf = fila.children[6]
+
+            let nombres = document.getElementById("nombresa").value = nombresf.innerHTML; 
+            let apellidos = document.getElementById("apellidosa").value = apellidosf.innerHTML; 
+            let tipo_doc = document.getElementById("tipo_doca").value = tipo_docf.innerHTML; 
+            let documento = document.getElementById("documentoa").value = documentof.innerHTML; 
+
+            //console.log("Editar paciente id: " + id.innerHTML + " nombres: " + nombres.innerHTML + " apellidos: " + apellidos.innerHTML + " tipo doc: "+ tipo_doc.innerHTML + " doc: "+ documento.innerHTML+ " lugar nac: "+ lugar_nac.innerHTML +" fecha nac: "+ fecha_nac.innerHTML); 
+
+            // PETICION FETCH 
+            const putPaciente = 'http://localhost:9000/ipsbarranquilla/updatepaciente/'+id.innerHTML;
+            const btnPut = document.getElementById("btnPut");
+        
+            btnPut.addEventListener('click', function (e){
+                e.preventDefault();
+        
+                let nombres = document.getElementById("nombresa").value; 
+                let apellidos = document.getElementById("apellidosa").value; 
+                let tipo_doc = document.getElementById("tipo_doca").value; 
+                let documento = document.getElementById("documentoa").value; 
+
+        
+                let data = {
+                    nombres: nombres,
+                    apellidos: apellidos,
+                    tipo_doc: tipo_doc,
+                    documento: documento,
+                }
+        
+                const options = {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                }
+        
+                fetch(putPaciente, options)
+                .then(response => console.log(response))
+                closeModalEdit()
+            })
+        })        
+
+        // AÑADIR CITA, PETICION POST
+        capturarFila(document, 'click', '.btnAddCita', e =>{
+            const fila = e.target.parentNode.parentNode
+            const id = fila.firstElementChild
+            //console.log("Añadir cita id: " + id.innerHTML);
+
+            // Peticion Fetch
+            const addCita = 'http://localhost:9000/ipsbarranquilla/addcitas';
+
+            const btnAddCita = document.getElementById("btnAddCita");
+        
+            btnAddCita.addEventListener('click', function (e){
+                e.preventDefault();
+        
+                let fecha = document.getElementById("fecha").value; 
+                let hora = document.getElementById("hora").value; 
+                let lugar = document.getElementById("lugar").value; 
+                let direccion = document.getElementById("direccion").value; 
+                let doctor = document.getElementById("doctor").value; 
+                let estado = document.getElementById("estado").value; 
+                let tipo = document.getElementById("tipo").value; 
+                let prioritaria = document.getElementById("prioritaria").value; 
+                let observacion = document.getElementById("observacion").value; 
+        
+                let data = {
+                    fecha: fecha,
+                    hora: hora,
+                    lugar: lugar,
+                    direccion: direccion,
+                    doctor: doctor,
+                    estado: estado,
+                    tipo: tipo,
+                    prioritaria: prioritaria,
+                    observacion: observacion,
+                    idpaciente: id.innerHTML
+                }
+        
+                const options = {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                }
+        
+                fetch(addCita, options).then(response => console.log(response))
+                closeModalCita()
+            })
+        })
+
+        // DELETE PACIENTE, PETICION DELETE
+        capturarFila(document, 'click', '.btnDelete', e =>{
+            const fila = e.target.parentNode.parentNode
+            const id = fila.firstElementChild
+            //console.log("Eliminar paciente id: " + id.innerHTML);
+
+            // PETICION FETCH
+            const deletePaciente = 'http://localhost:9000/ipsbarranquilla/deletepaciente/'+id.innerHTML;
+            const btnDelete = document.getElementById("btnDelete");
+        
+            btnDelete.addEventListener('click', function (e){
+                e.preventDefault();
+        
+                const options = {
+                    method: 'DELETE',
+                }
+        
+                fetch(deletePaciente, options).then(response => console.log(response))
+                closeModalDelete()
+            })
+        })
+
+            
+        
     </script>
 
 </body>
