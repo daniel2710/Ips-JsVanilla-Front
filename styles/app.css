@@ -12,6 +12,15 @@
     overflow:auto !important;
 }
 
+.table-div::-webkit-scrollbar{
+    width: 7px;
+}
+
+.table-div::-webkit-scrollbar-thumb{
+    background-color: #033581;
+    border-radius: 10px;
+}
+
 .navbarMain{
     font-size: 1.3rem;
     background-color: #0871b4;
