@@ -175,6 +175,7 @@
                 <h3>EDITAR PACIENTE</h3>
                 <form>
                     <br/>
+                    <input id="idpacientea" required class="d-none" name="idpaciente" />
                     <label>Nombres</label>
                     <input id="nombresa" required class="form-control" type="text" name="nombres" />
                     <br/>
@@ -186,6 +187,8 @@
                     <br/>
                     <label>Documento</label>
                     <input id="documentoa" required class="form-control" type="number" min={10000} name="documento" />
+                    <input id="fecha_naca" required class="d-none" type="text" name="fecha_nac" />
+                    <input id="lugar_naca" required class="d-none" type="text" name="lugar_nac" />
                     <br/>
                     <div class='d-flex bg-white justify-content-between'>
                         <button id="btnPut" type="submit" class="btn btn-success m-1">Editar Paciente</button>
@@ -222,7 +225,12 @@
 
         // AÑADIR PACIENTE
         //Peticion Fetch 
-        const addPaciente = 'http://localhost:9000/ipsbarranquilla/addpaciente';
+
+        // api node js
+        //const addPaciente = 'http://localhost:9000/ipsbarranquilla/addpaciente';
+
+        // api springboot
+        const addPaciente = "http://localhost:8080/crud/pacientes/createpaciente";
 
         const btnAddPaciente = document.getElementById("btnAddPaciente");
         
@@ -271,31 +279,49 @@
             const lugar_nacf = fila.children[5]
             const fecha_nacf = fila.children[6]
 
+            console.log(id.innerHTML);
+
+
+            let idpaciente = document.getElementById("idpacientea").value = id.innerHTML;
             let nombres = document.getElementById("nombresa").value = nombresf.innerHTML; 
             let apellidos = document.getElementById("apellidosa").value = apellidosf.innerHTML; 
             let tipo_doc = document.getElementById("tipo_doca").value = tipo_docf.innerHTML; 
             let documento = document.getElementById("documentoa").value = documentof.innerHTML; 
+            let lugar_nac = document.getElementById("lugar_naca").value = lugar_nacf.innerHTML; 
+            let fecha_nac = document.getElementById("fecha_naca").value = fecha_nacf.innerHTML; 
 
             //console.log("Editar paciente id: " + id.innerHTML + " nombres: " + nombres.innerHTML + " apellidos: " + apellidos.innerHTML + " tipo doc: "+ tipo_doc.innerHTML + " doc: "+ documento.innerHTML+ " lugar nac: "+ lugar_nac.innerHTML +" fecha nac: "+ fecha_nac.innerHTML); 
 
             // PETICION FETCH 
-            const putPaciente = 'http://localhost:9000/ipsbarranquilla/updatepaciente/'+id.innerHTML;
+            // api node js 
+            // const putPaciente = 'http://localhost:9000/ipsbarranquilla/updatepaciente/'+id.innerHTML;
+
+            // api springboot
+            const putPaciente = 'http://localhost:8080/crud/pacientes/updatepaciente';
+
+
             const btnPut = document.getElementById("btnPut");
         
             btnPut.addEventListener('click', function (e){
                 e.preventDefault();
         
+                let idpaciente = document.getElementById("idpacientea").value;
                 let nombres = document.getElementById("nombresa").value; 
                 let apellidos = document.getElementById("apellidosa").value; 
                 let tipo_doc = document.getElementById("tipo_doca").value; 
                 let documento = document.getElementById("documentoa").value; 
+                let lugar_nac = document.getElementById("lugar_naca").value; 
+                let fecha_nac = document.getElementById("fecha_naca").value; 
 
         
                 let data = {
+                    idpaciente,
                     nombres: nombres,
                     apellidos: apellidos,
                     tipo_doc: tipo_doc,
                     documento: documento,
+                    fecha_nac: fecha_nac,
+                    lugar_nac: lugar_nac
                 }
         
                 const options = {
@@ -313,11 +339,25 @@
         // AÑADIR CITA, PETICION POST
         capturarFila(document, 'click', '.btnAddCita', e =>{
             const fila = e.target.parentNode.parentNode
+
+
             const id = fila.firstElementChild
-            //console.log("Añadir cita id: " + id.innerHTML);
+            const nombresf = fila.children[1]
+            const apellidosf = fila.children[2]
+            const tipo_docf = fila.children[3]
+            const documentof = fila.children[4]
+            const lugar_nacf = fila.children[5]
+            const fecha_nacf = fila.children[6]
+
+            console.log(id.innerHTML, nombresf.innerHTML);
+
 
             // Peticion Fetch
-            const addCita = 'http://localhost:9000/ipsbarranquilla/addcitas';
+            // api node js
+            // const addCita = 'http://localhost:9000/ipsbarranquilla/addcitas';
+
+            // api springboot
+            const addCita = 'http://localhost:8080/crud/citas/createcita'
 
             const btnAddCita = document.getElementById("btnAddCita");
         
@@ -336,7 +376,6 @@
         
                 let data = {
                     fecha: fecha,
-                    hora: hora,
                     lugar: lugar,
                     direccion: direccion,
                     doctor: doctor,
@@ -344,7 +383,17 @@
                     tipo: tipo,
                     prioritaria: prioritaria,
                     observacion: observacion,
-                    idpaciente: id.innerHTML
+                    idpaciente: {
+                        idpaciente: id.innerHTML,
+                        nombres: nombresf.innerHTML,
+                        apellidos: apellidosf.innerHTML,
+                        tipo_doc: tipo_docf.innerHTML,
+                        documento: documentof.innerHTML,
+                        fecha_nac: fecha_nacf.innerHTML,
+                        lugar_nac: lugar_nacf.innerHTML
+                    },
+                    hora: hora
+
                 }
         
                 const options = {
@@ -362,10 +411,15 @@
         capturarFila(document, 'click', '.btnDelete', e =>{
             const fila = e.target.parentNode.parentNode
             const id = fila.firstElementChild
-            //console.log("Eliminar paciente id: " + id.innerHTML);
+            console.log(id.innerHTML);
 
             // PETICION FETCH
-            const deletePaciente = 'http://localhost:9000/ipsbarranquilla/deletepaciente/'+id.innerHTML;
+            // api node js 
+            // const deletePaciente = 'http://localhost:9000/ipsbarranquilla/deletepaciente/'+id.innerHTML;
+
+            // api springboot
+            const deletePaciente = 'http://localhost:8080/crud/pacientes/deletepaciente/'+id.innerHTML;
+
             const btnDelete = document.getElementById("btnDelete");
         
             btnDelete.addEventListener('click', function (e){

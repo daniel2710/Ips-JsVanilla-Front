@@ -1,4 +1,9 @@
-const getAllPacientesUrl= "http://localhost:9000/ipsbarranquilla/pacientes";
+// api node js => 
+// const getAllPacientesUrl= "http://localhost:9000/ipsbarranquilla/pacientes";
+
+// api springboot =>
+const getAllPacientesUrl= "http://localhost:8080/crud/pacientes";
+
 
 const tabla = document.getElementById("tbodyPacientes");
 

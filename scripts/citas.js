@@ -1,5 +1,13 @@
-const getAllCitasUrl = "http://localhost:9000/ipsbarranquilla/citas";
-const getCitasId = "http://localhost:9000/ipsbarranquilla/citas/";
+// api node js
+// const getAllCitasUrl = "http://localhost:9000/ipsbarranquilla/citas";
+// const getCitasId = "http://localhost:9000/ipsbarranquilla/citas/";
+
+
+// api spring boot 
+const getAllCitasUrl = "http://localhost:8080/crud/citas/allcitas";
+const getCitasId = "http://localhost:8080/crud/citas/citawithpaciente/";
+
+
 const tabla = document.getElementById("tbodyCitas")
 
 // Evento
@@ -16,9 +24,12 @@ const capturarFila = (element, event, selector, handler)=>{
 }
 
 capturarFila(document, 'click', '.btnir', e =>{
+
     const fila = e.target.parentNode.parentNode
     const id = fila.firstElementChild
+
     console.log(id.innerHTML);
+
     // historial tablas y header
     const headerHistorialGet = document.getElementById("headerHistorial");
     const containerHistorialGet = document.getElementById("containerHistorial");
@@ -32,7 +43,13 @@ capturarFila(document, 'click', '.btnir', e =>{
     containerCitasGet.classList.add("d-none")
     headerCitasGet.classList.remove("d-flex")
     headerCitasGet.classList.add("d-none")
-    const getPaciente = "http://localhost:9000/ipsbarranquilla/pacientes/"+id.innerHTML;
+
+    // api node js
+    // const getPaciente = "http://localhost:9000/ipsbarranquilla/pacientes/"+id.innerHTML;
+
+
+    // api springboot
+    const getPaciente = "http://localhost:8080/crud/pacientes/paciente/"+id.innerHTML
 
     // Peticion para obtener el paciente seleccionado
     fetch(getPaciente)
@@ -42,6 +59,7 @@ capturarFila(document, 'click', '.btnir', e =>{
     // llamamos a la funcion y le pasamos como argumento la data
     .then(data => {
         mostrarPaciente(data)
+        console.log(data);
     })
     .catch(err=>{
         console.log(err);
@@ -103,7 +121,7 @@ function mostrarCitas(citas){
     let body = '';
     for (let i = 0; i<citas.length; i++){
         body += `<tr>
-            <td class="d-none">${citas[i].idpaciente}</td>
+            <td class="d-none">${citas[i].idpaciente.idpaciente}</td>
             <td id="idcita">${citas[i].idcita}</td>
             <td class="bg-info">${citas[i].fecha}</td>
             <td>${citas[i].hora}</td>
